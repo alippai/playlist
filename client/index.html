@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect('http://cuppa.sch.bme.hu:3000');
+      socket.on('news', function (data) {
+        socket.emit('my other event', { my: 'data' });
+      });
+    </script>
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      #playerContainer {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Playlist</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="container">
+      <h1>Title of the track comes here</h1>
+      <div id="playerContainer">
+        <div id="player"></div>
+      </div>
+      <div class="btn-toolbar">
+        <div class="btn-group player-controls">
+          <a class="btn btn-primary player-play" href="#"><i class="icon-play icon-white"></i></a>
+          <a class="btn" href="#"><i class="icon-step-backward"></i></a>
+          <a class="btn player-stop" href="#"><i class="icon-stop"></i></a>
+          <a class="btn" href="#"><i class="icon-step-forward"></i></a>
+        </div>
+      </div>
+      <table id="playlist" class="table table-condensed table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Operations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-track-id="uVlFeE-TQdE">
+            <td>Hans Zimmer - Hunger</td>
+            <td><a class="btn btn-mini player-play" href="#"><i class="icon-play"></i></a></td>
+          </tr>
+          <tr data-track-id="Cy6iwP9Ux3A">
+            <td>Eddie Vedder - Society</td>
+            <td><a class="btn btn-mini player-play" href="#"><i class="icon-play"></i></a></td>
+          </tr>
+          <tr data-track-id="qmxFAT581T4">
+            <td>Ludovico Einaudi - Primavera</td>
+            <td><a class="btn btn-mini player-play" href="#"><i class="icon-play"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btn-toolbar">
+        <div class="btn-group player-controls">
+          <a class="btn btn-primary player-play" href="#"><i class="icon-play icon-white"></i></a>
+          <a class="btn" href="#"><i class="icon-step-backward"></i></a>
+          <a class="btn player-stop" href="#"><i class="icon-stop"></i></a>
+          <a class="btn" href="#"><i class="icon-step-forward"></i></a>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.0-rc.1/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+      var tag = document.createElement('script');
+      tag.src = "//www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '640',
+          width: '1170',
+          videoId: 'uVlFeE-TQdE',
+          playerVars: {
+            controls: 0,
+            disablekb: 1,
+            showinfo: 0
+          },
+          events: {
+            'onReady': onPlayerReady,
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        event.target.playVideo();
+        $('.player-controls .player-play').addClass('player-pause').removeClass('player-play');
+        $('.player-controls .player-pause i').addClass('icon-pause').removeClass('icon-play');
+      }
+
+      $('.player-controls').on('click', '.player-stop', function () {
+        player.stopVideo();
+        $('.player-controls .player-pause').addClass('player-play').removeClass('player-pause');
+        $('.player-controls .player-play i').addClass('icon-play').removeClass('icon-pause');
+      });
+      $('.player-controls').on('click', '.player-pause', function () {
+        player.pauseVideo();
+        $('.player-controls .player-pause').addClass('player-play').removeClass('player-pause');
+        $('.player-controls .player-play i').addClass('icon-play').removeClass('icon-pause');
+      });
+      $('.player-controls').on('click', '.player-play', function () {
+        player.playVideo();
+        $('.player-controls .player-play').addClass('player-pause').removeClass('player-play');
+        $('.player-controls .player-pause i').addClass('icon-pause').removeClass('icon-play');
+      });
+      $('.player-controls').on('click', '.player-play', function () {
+        player.playVideo();
+        $('.player-controls .player-play').addClass('player-pause').removeClass('player-play');
+        $('.player-controls .player-pause i').addClass('icon-pause').removeClass('icon-play');
+      });
+      $('#playlist').on('click', '.player-play', function () {
+        player.loadVideoById($(this).parents('tr').data('track-id'), 0, 'hd720');
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $("#playlist tbody").sortable({ forceHelperSize: true, forcePlaceholderSize: true, axis: 'y' });
+      });
+    </script>
+  </body>
+</html>
