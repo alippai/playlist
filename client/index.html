@@ -17,6 +17,15 @@
       #playerContainer {
         text-align: center;
       }
+      #playlist {
+        counter-reset: row;
+      }
+      #playlist tbody tr {
+        counter-increment: section;
+      }
+      #playlist td:first-child:before {
+        content: counter(section) ". ";
+      }
     </style>
   </head>
   <body>
@@ -78,6 +87,7 @@
     <script src="http://code.jquery.com/ui/1.9.0-rc.1/jquery-ui.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
+      var playerControls = $('.player-controls');
       var tag = document.createElement('script');
       tag.src = "//www.youtube.com/iframe_api";
       var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -95,7 +105,7 @@
             showinfo: 0
           },
           events: {
-            'onReady': onPlayerReady,
+            'onReady': onPlayerReady
           }
         });
       }
@@ -106,22 +116,22 @@
         $('.player-controls .player-pause i').addClass('icon-pause').removeClass('icon-play');
       }
 
-      $('.player-controls').on('click', '.player-stop', function () {
+      playerControls.on('click', '.player-stop', function () {
         player.stopVideo();
         $('.player-controls .player-pause').addClass('player-play').removeClass('player-pause');
         $('.player-controls .player-play i').addClass('icon-play').removeClass('icon-pause');
       });
-      $('.player-controls').on('click', '.player-pause', function () {
+      playerControls.on('click', '.player-pause', function () {
         player.pauseVideo();
         $('.player-controls .player-pause').addClass('player-play').removeClass('player-pause');
         $('.player-controls .player-play i').addClass('icon-play').removeClass('icon-pause');
       });
-      $('.player-controls').on('click', '.player-play', function () {
+      playerControls.on('click', '.player-play', function () {
         player.playVideo();
         $('.player-controls .player-play').addClass('player-pause').removeClass('player-play');
         $('.player-controls .player-pause i').addClass('icon-pause').removeClass('icon-play');
       });
-      $('.player-controls').on('click', '.player-play', function () {
+      playerControls.on('click', '.player-play', function () {
         player.playVideo();
         $('.player-controls .player-play').addClass('player-pause').removeClass('player-play');
         $('.player-controls .player-pause i').addClass('icon-pause').removeClass('icon-play');
