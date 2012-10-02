@@ -1,0 +1,15 @@
+#playerContainer {
+  text-align: center;
+}
+#playlist {
+  counter-reset: row;
+}
+#playlist tbody tr {
+  counter-increment: section;
+}
+#playlist td:first-child:before {
+  content: counter(section) ". ";
+}
+.active td {
+  background-color: #90ee90;
+}
